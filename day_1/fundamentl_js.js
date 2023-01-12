@@ -75,7 +75,7 @@
 // preincrement, postincrement
 
 
-let inc=2
+// let inc=2
 // postinvrement 
 // console.log(inc++) // 2
 // console.log(inc)   // 3 
@@ -122,5 +122,55 @@ let inc=2
 
 
 // let isCorrect=(100<50) ? true : (50>10) ? 'second if true' : false
-let youCanDrive=(18>18)
-console.log(isCorrect)
+// let youCanDrive=(18>18)
+// console.log(isCorrect)
+
+
+// Nullish coalescing operator '??'
+// ?? returns the first defined value
+// let user='kerle'
+
+// console.log(user ?? 'ajit')
+
+
+// functions in js
+// function showMsg(from,msg){
+//     from='*'+from+'*'
+//     return msg+' from '+from
+// }
+
+// let from ='ajit'
+// let msg='good morning'
+// console.log(showMsg(from,msg))
+
+// =================================================
+// function expression 
+// As the function creation happens in the context of the assignment expression (to the right side of =), this is a Function Expression.
+
+// let sayHi=function(){
+//   return 'hello hi'
+// }
+// console.log(sayHi())
+// let sayBye=sayHi
+// let bye=sayBye
+// console.log(sayBye())
+// console.log(bye())
+
+// you agreed or not function using callback
+
+function ask(question,yes,no){
+     if(question){
+        return question+" "+yes()
+     }else{
+        return no()
+     }
+}
+
+function yes(){
+    return 'i greed with you'
+}
+function no(){
+    return 'i am not agreed with you'
+}
+
+console.log(ask('Do you agree?',yes,no))

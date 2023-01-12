@@ -1,0 +1,20 @@
+// set datastructure
+let set=new Set()
+// console.log(set)
+
+set.add(1)
+set.add(2)
+set.add(3)
+set.add(4)
+set.add(5)
+console.log(set)
+set.delete(5)
+console.log(set)
+console.log(set.size)
+console.log(set.has(4))
+// console.log(set.clear())
+// console.log(set)
+
+// console.log(set.keys())
+// console.log(set.values())
+// console.log(set.entries())

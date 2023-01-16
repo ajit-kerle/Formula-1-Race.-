@@ -1,0 +1,34 @@
+# data types 
+
+primitive datatypes
+1. Number
+2. String
+3. undefined
+4. null
+5. Symbol
+6. Boolean
+7. BigInt
+
+Non-Primitive datatypes
+8. Object
+
+
+
+
+# Functions are senior citizen in javascript
+1.Function Expression
+2.Arrow Function
+3.Simple Function
+4.Named Function Expression
+
+# Objects 
+
+
+# Arrays 
+
+# String 
+
+# important topics
+
+1.All datatypes type conversion
+2.

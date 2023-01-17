@@ -1,0 +1,18 @@
+Data quality is used to describe the degree to which data is accurate, complete, timely and consistent with business requirements rules;
+
+Data governance is about the exercise of authority, control and shared decision-making over the management of data assets.
+
+
+// terminology in data mesh 
+https://datacadamia.com/data/quality/profiling
+
+
+What is a data catalog?
+A Data Catalog is a collection of metadata, combined with data management and search tools, that helps analysts and other data users to find the data that they need,
+
+
+Object.freeze(obj)
+Forbids adding/removing/changing of properties. Sets configurable: false, writable: false for all existing properties.
+
+
+https://medium.com/predict/javascript-functions-vs-methods-and-other-helpful-tips-e58a621b1d27#:~:text=Methods%20have%20a%20%E2%80%9Creceiver%E2%80%9D%20while%20functions%20do%20not.&text=I%20never%20really%20understood%20the%20difference%20until%20I%20started%20learning%20JavaScript.&text=Notice%20how%20there%20is%20no,a%20function%20from%20a%20method.

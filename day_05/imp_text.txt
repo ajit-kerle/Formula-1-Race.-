@@ -1,0 +1,48 @@
+typeof  value for classes are function
+inside classes use strict automatically implemented
+
+
+// classes expression : we can assign and we can return class as value
+If we are creating variable without this keyword this will not assign in prototype
+
+// class inheritance
+1 // method overriding : declaring same method in child class instead of using parent thats called method overriding
+
+2. to call parent contructor we use constructor [super.methodName]
+3. to use parent method we use [super()]
+
+imp : arrow function do not have this, they we cannt call with new keyword and 
+
+//   Arrow functions have no super//
+// arrow function will not affect the super keyword //
+
+
+//===============================================
+// constructor overriding 
+ 1.  According to the specification, if a class extends another class and has no constructor, then the following “empty” constructor is generated:
+
+
+// // Inheritance of static properties and methods
+1. Static properties cannot be directly accessed on instances of the class. Instead, they're accessed on the class itself.
+
+
+// static methods and properties are used in 
+1. Static methods are used for the functionality that belongs to the class
+2. They are labeled by the word static in class declaration.
+3.Static properties are used when we’d like to store class-level data
+
+
+// ===========================
+1. protected fields start with _. That’s a well-known convention, not enforced at the language level.
+2. Private fields start with #. JavaScript makes sure we can only access those from inside the class.
+
+
+// =================================
+// we can inherit built in classes Array isEmpty() methods
+
+// ====================================
+obj instanceof Class
+
+a mixin is a class containing methods that can be used by other classes without a need to inherit from it.
+
+multiple inheritance is not happens in js instead of we can use mixins

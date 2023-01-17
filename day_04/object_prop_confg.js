@@ -1,21 +1,22 @@
 // object property flags
 
-// let person={
-//     name:'sam',
-//     age:25
-// }
+let person={
+    name:'sam',
+    age:25,
+    lname:'karan'
+}
 
 // console.log(person)
-// let descriptor=Object.getOwnPropertyDescriptor(person,'age') // to get extra metadata of objects props
+let descriptor=Object.getOwnPropertyDescriptor(person,'age') // to get extra metadata of objects props
 // console.log(descriptor)
 
 // console.log(JSON.stringify(descriptor,null,2))
 
 // let users={}
 
-// Object.defineProperty(users,'lname',{value:'sameer',writable:false,
-// enumerable: true,
-// configurable: true})
+Object.defineProperty(person,'lname',{value:'sameer',writable:false,
+enumerable: false,
+configurable: true})
 // let descriptor=Object.getOwnPropertyDescriptor(users,'name');
 
 // console.log(descriptor)
@@ -23,9 +24,10 @@
 // users.lname='pete'
 // console.log(users)
 
-// for(let k in users){
-//     console.log(k)
-// }
+
+for(let k in person){
+    console.log(k)
+}
 // for(let k of Object.keys(users)){
 //     console.log(k)
 // }

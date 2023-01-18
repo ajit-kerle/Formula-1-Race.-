@@ -1,0 +1,5 @@
+())
+// console.log(gen.next())
+// console.log(gen.next())
+// console.log(gen.next())
+// console.log(gen.next())

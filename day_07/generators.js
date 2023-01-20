@@ -8,6 +8,9 @@ function* generators(array){
 } 
 
 
+
+
+
 let sg=generators([1,2,3,4,5,6,7])
 
 function getNewId(){
@@ -33,6 +36,7 @@ let obj=[
 function* getArrayData(array){
   for(let i=0;i<array.length;i++){
     yield array[i];
+
   }
   return 
 }

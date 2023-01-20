@@ -19,22 +19,26 @@ fs.readFile(path.join(__dirname,'files','demo.txt'),(err,data)=>{
 
 
 // writing in  file 
-fs.writeFile(path.join(__dirname,'files','new1.txt'),'i have created this file using fs modules',(err)=>{
+// if()
+// if(fs.existsSync(path.join()))
+// if(pa)
+fs.writeFile(path.join(__dirname,'files','lorem.txt'),'i have created this file using fs modules',(err)=>{
+
     if(err){
         throw err
     }
     console.log('writing completed....')
 
     // it update already created files
-    fs.appendFile(path.join(__dirname,'files','new1.txt'),'\n\ndata is appending using noode js',(err)=>{
-        if(err) throw err
-        console.log('append operation done....')
+    // fs.appendFile(path.join(__dirname,'files','new1.txt'),'\n\ndata is appending using noode js',(err)=>{
+    //     if(err) throw err
+    //     console.log('append operation done....')
 
-        fs.rename(path.join(__dirname,'files','new1.txt'),path.join(__dirname,'files','renamedFile.txt'),(err)=>{
-            if(err) throw err
-            console.log('file is renamed ...')
-        })
-    })
+    //     fs.rename(path.join(__dirname,'files','new1.txt'),path.join(__dirname,'files','renamedFile.txt'),(err)=>{
+    //         if(err) throw err
+    //         console.log('file is renamed ...')
+    //     })
+    // })
     
 })
 

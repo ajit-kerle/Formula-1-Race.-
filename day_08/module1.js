@@ -11,6 +11,4 @@ const sayH2=()=>{
 }
 
 
-
-
-module.exports={sayH,sayH1,sayH2}
+module.exports={sayH,sayH1,sayH2} 

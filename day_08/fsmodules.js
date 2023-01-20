@@ -1,20 +1,59 @@
 const fs=require('fs')
 const path=require('path')
+const {promisify}=require('util')
+
+let p=path.join(__dirname,'files','demo.txt')
 
 
+let promise=promisify(fs.exists)
 
-fs.readFile(path.join(__dirname,'files','demo.txt'),(err,data)=>{
-    if(err){
-        throw err
-    }
-    // console.log('text data  ',data.toString())
-    let text=data.toString()
-    // console.log(typeof data)
-    // console.log(text[0])
-    console.log(text)
-    console.log('reading completed....')
 
-})
+// console.log(p)
+// console.log(path.basename(p))
+
+// 1  using staticly 
+// if(path.basename(p)==='demo.txt'){
+
+// 2   using synchronus  
+// if(fs.existsSync(path.join(__dirname,'files','demo.txt'))){
+
+// 3. using promise chain
+// promise(p).then(
+//     (exists)=>{
+//         // console.log()
+//         if(exists){
+//             fs.readFile(path.join(__dirname,'files','demo.txt'),(err,data)=>{
+//                 if(err){
+//                     throw err
+//                 }
+//                 // console.log('text data  ',data.toString())
+//                 let text=data.toString()
+//                 // console.log(typeof data)
+//                 // console.log(text[0])
+//                 console.log(text)
+//                 console.log('reading completed....')
+            
+//             })
+//         }
+//     }
+// )
+// .catch((error)=>{console.log(error)})
+
+
+// console.log(fs.existsSync(path.join(__dirname,'files','demo.txt')))
+// fs.readFile(path.join(__dirname,'files','demo.txt'),(err,data)=>{
+//     if(err){
+//         throw err
+//     }
+//     // console.log('text data  ',data.toString())
+//     let text=data.toString()
+//     // console.log(typeof data)
+//     // console.log(text[0])
+//     console.log(text)
+//     console.log('reading completed....')
+
+// })
+// }
 
 
 

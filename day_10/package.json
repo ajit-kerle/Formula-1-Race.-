@@ -1,0 +1,26 @@
+{
+  "name": "formula-1-race.-",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kerle-ajit/Formula-1-Race.-.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kerle-ajit/Formula-1-Race.-/issues"
+  },
+  "homepage": "https://github.com/kerle-ajit/Formula-1-Race.-#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongodb": "^4.13.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}

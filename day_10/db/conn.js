@@ -11,9 +11,10 @@ async function dbconn(){
     const db = client.db(dbName)
 
     // console.log(db)
-    const users=db.collection('users')
+    // const users=db.collection('users')
+    // cons
     // console.log(users)
-    return users
+    return db
 }
 
 

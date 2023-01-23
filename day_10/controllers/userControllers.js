@@ -12,6 +12,8 @@ const addUser=async (req,res)=>{
   try{
     // 
     const reqData=req.body
+
+    // throw res.send({status:400,msg:"error using throw"})
     
     // this code for generic error
     let {username,fullname,email,phone,gender,password}=reqData
@@ -37,6 +39,7 @@ const addUser=async (req,res)=>{
 
 
     if(!mobileRegex.test(phone)) {
+        
         return res.status(400).send({status:400,msg:"Enter valid phone number"})
     }
 
@@ -134,11 +137,76 @@ const deleteUser=async(req,res)=>{
 // 5. get all users
 const getUsers = async(req,res)=>{
     try{
-        // user
-        let user=await dbconn()
-        const usersdata=await user.find().toArray()
+        // users
+        
+
+        // if(req.query.)
+        console.log(req.query.page)
+
+        let userdb=await dbconn()
+
+
+        // pagination
+        if(req.query.page){
+        let page=req.query.page||0
+        let perpage=3
+        const paginationdata=await userdb.find().skip(perpage*page).limit(perpage).toArray()
+        return res.status(200).send({status:200,data:paginationdata})
+
+        
+        }else {
+            // sort by fullname
+         if(req.query.fullname){
+            let fullname_sort=req.query.fullname
+            const fullnamesorteduser=await userdb.find().sort({fullname:fullname_sort}).toArray()
+           return res.status(200).send({status:200,data:fullnamesorteduser})
+
+           // sort by username
+         }else if(req.query.username){
+            let username_sort=req.query.username
+            const usernamesortuser=await userdb.find().sort({username:username_sort}).toArray()
+           return res.status(200).send({status:200,data:usernamesortuser})
+         }
+        }
+        
+        let filterobj={}
+        let queryData=req.query
+        let fname=queryData.fname
+        let lname= queryData.lname
+        let email=queryData.email
+        if(fname){
+          filterobj.fullname={}
+          fname=fname.trim()
+          filterobj.fullname.$regex=fname
+          filterobj.fullname.$options="i"
+          const searchfname=await userdb.find(filterobj).toArray()
+          return res.status(200).send({status:200,data:searchfname})
+        }
+
+        if(lname){
+          filterobj.username={}
+          lname=lname.trim()
+          filterobj.username.$regex=lname
+          filterobj.username.$options="i"
+          const searchlname=await userdb.find(filterobj).toArray()
+          return res.status(200).send({status:200,data:searchlname})
+        }
+
+        if(email){
+            filterobj.email={}
+            email=email.trim()
+            filterobj.email.$regex=email
+            filterobj.email.$options="i"
+            const searchemail=await userdb.find(filterobj).toArray()
+            return res.status(200).send({status:200,data:searchemail})
+        }
+        
+        const allusers=await userdb.find(filterobj).toArray()
+
+        
+
     
-        res.status(200).send({status:200,data:usersdata})
+        res.status(200).send({status:200,data:allusers})
 
     }catch(err){
       console.log('Error in getUsers: ',err)
@@ -158,6 +226,8 @@ const modifieUser=async (req,res)=>{
 
             // params id i am following to him
             let user=await userdb.findOne({_id:ObjectId(req.params.id)})
+
+
 
             if(!user.followers.includes(req.body.userId)){
                 //  pushing followers
@@ -189,9 +259,7 @@ const showFollowers=async(req,res)=>{
     try{
 
         if(ObjectId.isValid(req.params.id)){
-
             let userdb=await dbconn()
-    
             let userfollowers=await userdb.findOne({_id:ObjectId(req.params.id)})
             
             res.status(200).send({status:200,followers:userfollowers.followers})
@@ -203,6 +271,11 @@ const showFollowers=async(req,res)=>{
       console.log('Error in showFollowers: ',err)
     }
 }
+
+// 8. restaurant for learning aggregation pipe line
+// const aggregation_pipeline=async ()=>{
+  
+// }
 
 
 module.exports={getUser,getUsers,modifieUser,updateUser,deleteUser,addUser,showFollowers}

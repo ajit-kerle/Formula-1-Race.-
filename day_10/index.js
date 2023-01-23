@@ -1,5 +1,5 @@
 const express=require('express')
-const main=require('./db/conn.js')
+const dbconn = require('./db/conn.js')
 const router=require('./route/routers.js')
 
 const app=express()
@@ -8,9 +8,11 @@ app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 app.use('/',router)
 
-main().then(console.log)
+
+// db connections
+dbconn().then()
 .catch(console.error)
-.finally(()=>client.close())
+.finally(()=>console.log('mongodb connected successfully..'))
 
 
 const PORT=process.env.PORT||9000

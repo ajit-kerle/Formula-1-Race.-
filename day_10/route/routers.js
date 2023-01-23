@@ -1,4 +1,5 @@
 const express=require('express')
+const {getUser,getUsers,modifieUser,updateUser,deleteUser,addUser,showFollowers}=require('../controllers/userControllers')
 
 const router=express.Router()
 
@@ -19,10 +20,10 @@ router.delete('/deleteuser/:id',deleteUser)
 router.get('/getusers',getUsers)
 
 //6. API to follow a user
-router.patch('/follow',modifieUser)
+router.put('/user/:id/follow',modifieUser)
 
 //7. API to follow a user
-router.get('/allfollowers',showFollowers)
+router.get('/user/:id/followers',showFollowers)
 
 module.exports=router
 

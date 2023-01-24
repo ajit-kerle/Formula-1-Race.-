@@ -126,12 +126,13 @@ const example1=async()=>{
 
     // accumaltor syntac
     // sum max avg
-    let data2=await persondb.aggregate([
-            //   {$group:{_id:"$age",
-            // count:{$sum:1}}}
+    // let data2=await persondb.aggregate([
+    //         //   {$group:{_id:"$age",
+    //         // count:{$sum:1}}}
+    //          {$sort:{index:1,name:1}}
 
-            // {$group:{_id:"$favoriteFruit",count:{$sum:1}}}
-            ]).toArray()
+    //         // {$group:{_id:"$favoriteFruit",count:{$sum:1}}}
+    //         ]).toArray()
     
 
     console.log(data2)

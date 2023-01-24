@@ -152,23 +152,51 @@ const getUsers = async(req,res)=>{
         
         let userdb=await dbconn()
 
+        // if()
+
 
         let match={}
 
         if(req.query.keyword){
            match.$or=[
             {username:new RegExp(req.query.keyword,"i")},
-            {fullname:new RegExp(req.query.keyword,"i")}
+            {fullname:new RegExp(req.query.keyword,"i")},
+            {email:new RegExp(req.query.keyword,"i")}
           ]
         }
+        console.log(match)
 
+
+        let sort={fullname:1,username:1}
+
+        if(req.query.fullname){
+          sort={
+           fullname:parseInt(req.query.fullname)
+          
+          }
+       }else if(req.query.username){
+        sort={
+          username:parseInt(req.query.username)
+         
+         }
+       }
+
+        console.log(sort)
+        
+       
         let pipeline=[
+          
+          
           {$match:match},
+      
           {
             $facet:{
-              data:[{$skip:skip},{$limit:limit}]
+              data:[{$skip:skip},{$limit:limit},{$sort:sort}],
+              
             }
-          }
+          } ,
+          
+         
         ]
 
         let allusers=await userdb.aggregate(pipeline).toArray()

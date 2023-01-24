@@ -1,7 +1,7 @@
-const e = require('express')
 const dbconn = require('../db/conn.js') 
 const {isValid}=require('../utils/validator.js')
 const {ObjectId}=require('mongodb')
+const bcrypt = require("bcrypt")
 
 const mobileRegex = /^[6-9]\d{9}$/
 
@@ -51,6 +51,11 @@ const addUser=async (req,res)=>{
         return res.status(400).send({status:400,msg:'Enter valid email'})
     }
 
+    // password hashed
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(obj1.password, salt)
+    obj1.password=hashedPassword
+
 
     let user=await dbconn()
     const result=await user.insertOne(obj1)
@@ -69,10 +74,9 @@ const getUser=async(req,res)=>{
     try{
         if(ObjectId.isValid(req.params.id)){
         let userid=req.params.id
-        // console.log(userid)
         let userdb=await dbconn()
 
-
+        // {_id:ObjectId(userid)})
         let userfound=await userdb.findOne({_id:ObjectId(userid)})
         // console.log(userfound)
 
@@ -140,68 +144,96 @@ const getUsers = async(req,res)=>{
         // users
         
 
-        // if(req.query.)
-        console.log(req.query.page)
-
+        // pagination logic 
+        let page=req.query.page||1
+        let docperpage=3
+        let skip=docperpage*(page-1)
+        let limit=docperpage
+        
         let userdb=await dbconn()
 
 
-        // pagination
-        if(req.query.page){
-        let page=req.query.page||0
-        let perpage=3
-        const paginationdata=await userdb.find().skip(perpage*page).limit(perpage).toArray()
-        return res.status(200).send({status:200,data:paginationdata})
+        let match={}
+
+        if(req.query.keyword){
+           match.$or=[
+            {username:new RegExp(req.query.keyword,"i")},
+            {fullname:new RegExp(req.query.keyword,"i")}
+          ]
+        }
+
+        let pipeline=[
+          {$match:match},
+          {
+            $facet:{
+              data:[{$skip:skip},{$limit:limit}]
+            }
+          }
+        ]
+
+        let allusers=await userdb.aggregate(pipeline).toArray()
+
+
+        // // pagination
+        // if(req.query.page){
+        // let page=req.query.page||0
+        // let perpage=3
+        // const paginationdata=await userdb.find().skip(perpage*page).limit(perpage).toArray()
+        // return res.status(200).send({status:200,data:paginationdata})
 
         
-        }else {
-            // sort by fullname
-         if(req.query.fullname){
-            let fullname_sort=req.query.fullname
-            const fullnamesorteduser=await userdb.find().sort({fullname:fullname_sort}).toArray()
-           return res.status(200).send({status:200,data:fullnamesorteduser})
+        // }else {
+        //     // sort by fullname
+        //  if(req.query.fullname){
+        //     let fullname_sort=req.query.fullname
+        //     const fullnamesorteduser=await userdb.find().sort({fullname:fullname_sort}).toArray()
+        //    return res.status(200).send({status:200,data:fullnamesorteduser})
 
-           // sort by username
-         }else if(req.query.username){
-            let username_sort=req.query.username
-            const usernamesortuser=await userdb.find().sort({username:username_sort}).toArray()
-           return res.status(200).send({status:200,data:usernamesortuser})
-         }
-        }
+        //    // sort by username
+        //  }else if(req.query.username){
+        //     let username_sort=req.query.username
+        //     const usernamesortuser=await userdb.find().sort({username:username_sort}).toArray()
+        //    return res.status(200).send({status:200,data:usernamesortuser})
+        //  }
+        // }
         
-        let filterobj={}
-        let queryData=req.query
-        let fname=queryData.fname
-        let lname= queryData.lname
-        let email=queryData.email
-        if(fname){
-          filterobj.fullname={}
-          fname=fname.trim()
-          filterobj.fullname.$regex=fname
-          filterobj.fullname.$options="i"
-          const searchfname=await userdb.find(filterobj).toArray()
-          return res.status(200).send({status:200,data:searchfname})
-        }
+        // let filterobj={}
+        // let queryData=req.query
+        // let fname=queryData.fname
+        // let lname= queryData.lname
+        // let email=queryData.email
 
-        if(lname){
-          filterobj.username={}
-          lname=lname.trim()
-          filterobj.username.$regex=lname
-          filterobj.username.$options="i"
-          const searchlname=await userdb.find(filterobj).toArray()
-          return res.status(200).send({status:200,data:searchlname})
-        }
 
-        if(email){
-            filterobj.email={}
-            email=email.trim()
-            filterobj.email.$regex=email
-            filterobj.email.$options="i"
-            const searchemail=await userdb.find(filterobj).toArray()
-            return res.status(200).send({status:200,data:searchemail})
-        }
+        // if(fname){
+        //   filterobj.fullname={}
+        //   fname=fname.trim()
+        //   filterobj.fullname.$regex=fname
+        //   filterobj.fullname.$options="i"
+        //   const searchfname=await userdb.find(filterobj).toArray()
+        //   return res.status(200).send({status:200,data:searchfname})
+        // }
+
+        // if(lname){
+        //   filterobj.username={}
+        //   lname=lname.trim()
+        //   filterobj.username.$regex=lname
+        //   filterobj.username.$options="i"
+        //   const searchlname=await userdb.find(filterobj).toArray()
+        //   return res.status(200).send({status:200,data:searchlname})
+        // }
+
+        // if(email){
+            
+        //     filterobj.email={}
+        //     email=email.trim()
+        //     filterobj.email.$regex=email
+        //     filterobj.email.$options="i"
+        //     const searchemail=await userdb.find(filterobj).toArray()
+        //     return res.status(200).send({status:200,data:searchemail})
+        // }
         
-        const allusers=await userdb.find(filterobj).toArray()
+        // const allusers=await userdb.find(filterobj).toArray()
+
 
         
 
@@ -278,4 +310,43 @@ const showFollowers=async(req,res)=>{
 // }
 
 
-module.exports={getUser,getUsers,modifieUser,updateUser,deleteUser,addUser,showFollowers}
+
+// login api
+
+const loginHandler=async(req,res)=>{
+  try{
+    let credentials=req.body
+
+    let obj2=new Users(credentials)
+
+
+    if(!obj2.isValidEmail()){
+      return res.status(400).send({status:400,msg:'Enter valid email'})
+    }
+
+    if(!obj2.isValidPassword()){
+      return res.status(400).send({status:400,msg:'Enter valid email'})
+    }
+    
+
+  let userdb=await dbconn()
+  let userdata=await userdb.findOne({email:credentials.email})
+
+  const validPassword = await bcrypt.compare(credentials.password, userdata.password)
+
+  if(!validPassword){
+    return res.status(400).send({status:400,msg:"wrong password"})
+  }
+  
+   let loginuser=await userdb.findOne({email:credentials.email,password:userdata.password})
+
+  res.status(201).send({status:201,data:loginuser})
+
+
+  }catch(error){
+    console.log(`Error in login api.`)
+  }
+
+}
+
+module.exports={getUser,getUsers,modifieUser,updateUser,deleteUser,addUser,showFollowers,loginHandler}

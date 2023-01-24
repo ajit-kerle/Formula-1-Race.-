@@ -1,5 +1,7 @@
 const express=require('express')
-const {getUser,getUsers,modifieUser,updateUser,deleteUser,addUser,showFollowers}=require('../controllers/userControllers')
+const {getUser,getUsers,modifieUser,updateUser,deleteUser,addUser,showFollowers,loginHandler}=require('../controllers/userControllers')
+const errorHandleMiddle=require("../middlewares/errorHandleMiddleware.js")
+const auth=require('../middlewares/auth.js')
 
 const router=express.Router()
 
@@ -17,13 +19,18 @@ router.patch('/updateuser/:id',updateUser)
 router.delete('/deleteuser/:id',deleteUser)
 
 //5. API to get all users
-router.get('/getusers',getUsers)
+router.get('/getusers',errorHandleMiddle,getUsers)
 
 //6. API to follow a user
 router.put('/user/:id/follow',modifieUser)
 
 //7. API to follow a user
 router.get('/user/:id/followers',showFollowers)
+
+
+
+// login api
+router.post("/login",auth,loginHandler)
 
 module.exports=router
 

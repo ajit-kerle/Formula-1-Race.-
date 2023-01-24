@@ -1,0 +1,6 @@
+[2023-01-24T14:49:10.656] [INFO] default - hello thats working greats
+[2023-01-24T14:49:10.657] [ERROR] default - Error in middleware function
+[2023-01-24T14:49:10.657] [WARN] default - warning here in middleware
+[2023-01-24T14:49:16.631] [INFO] default - hello thats working greats
+[2023-01-24T14:49:16.631] [ERROR] default - Error in middleware function
+[2023-01-24T14:49:16.631] [WARN] default - warning here in middleware

@@ -1,4 +1,5 @@
 const dbconn = require('../db/conn.js') 
+const bcrypt = require("bcrypt")
 
 module.exports = class Users{
    
@@ -26,5 +27,10 @@ module.exports = class Users{
     isValidBody(){
         return Object.keys(userObj).length >0
     }
+
+    // async hashPassword(){
+        
+    //     this.password=hashedPassword
+    // }
 
 }

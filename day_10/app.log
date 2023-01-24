@@ -1,0 +1,43 @@
+[2023-01-24T11:53:09.559] [INFO] default - hello thats working greats
+[2023-01-24T11:59:18.879] [INFO] default - hello thats working greats
+[2023-01-24T11:59:56.238] [INFO] default - hello thats working greats
+[2023-01-24T12:02:10.758] [INFO] default - hello thats working greats
+[2023-01-24T12:13:20.190] [INFO] default - hello thats working greats
+[2023-01-24T12:13:20.190] [ERROR] default - Error in middleware function
+[2023-01-24T12:14:39.340] [INFO] default - hello thats working greats
+[2023-01-24T12:14:39.340] [ERROR] default - Error in middleware function
+[2023-01-24T12:14:39.341] [WARN] default - warning here in middleware
+[2023-01-24T12:18:09.193] [INFO] default - hello thats working greats
+[2023-01-24T12:18:09.193] [ERROR] default - Error in middleware function
+[2023-01-24T12:18:09.194] [WARN] default - warning here in middleware
+[2023-01-24T12:25:18.428] [INFO] default - hello thats working greats
+[2023-01-24T12:25:18.429] [ERROR] default - Error in middleware function
+[2023-01-24T12:25:18.429] [WARN] default - warning here in middleware
+[2023-01-24T12:25:46.428] [INFO] default - hello thats working greats
+[2023-01-24T12:25:46.429] [ERROR] default - Error in middleware function
+[2023-01-24T12:25:46.429] [WARN] default - warning here in middleware
+[2023-01-24T12:26:11.619] [INFO] default - hello thats working greats
+[2023-01-24T12:26:11.619] [ERROR] default - Error in middleware function
+[2023-01-24T12:26:11.619] [WARN] default - warning here in middleware
+[2023-01-24T14:43:21.298] [INFO] default - hello thats working greats
+[2023-01-24T14:43:21.299] [ERROR] default - Error in middleware function
+[2023-01-24T14:43:21.299] [WARN] default - warning here in middleware
+[2023-01-24T14:43:56.680] [INFO] default - hello thats working greats
+[2023-01-24T14:43:56.681] [ERROR] default - Error in middleware function
+[2023-01-24T14:43:56.681] [WARN] default - warning here in middleware
+[2023-01-24T14:48:59.173] [INFO] default - hello thats working greats
+[2023-01-24T14:48:59.174] [ERROR] default - Error in middleware function
+[2023-01-24T14:48:59.174] [WARN] default - warning here in middleware
+[2023-01-24T14:49:10.656] [INFO] default - hello thats working greats
+[2023-01-24T14:49:10.657] [ERROR] default - Error in middleware function
+[2023-01-24T14:49:10.657] [WARN] default - warning here in middleware
+[2023-01-24T14:49:16.631] [INFO] default - hello thats working greats
+[2023-01-24T14:49:16.631] [ERROR] default - Error in middleware function
+[2023-01-24T14:49:16.631] [WARN] default - warning here in middleware
+
+
+
+[2023-01-24T14:52:55.966] [INFO] default - user logged in
+[2023-01-24T14:54:57.458] [INFO] default - { method: 'POST', path: '/login' }
+[2023-01-24T18:50:00.729] [INFO] default - { method: 'POST', path: '/login' }
+[2023-01-24T18:50:00.730] [WARN] default - warning here in middleware

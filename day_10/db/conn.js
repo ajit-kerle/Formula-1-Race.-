@@ -11,20 +11,13 @@ async function dbconn(){
     const db = client.db(dbName)
 
     // console.log(db)
-    // const users=db.collection('users')
+    const users=db.collection('users')
     // cons
     // console.log(users)
-    return db
+    return users
 }
 
+   
 
-// dbconn().then(console.log)
-// .catch(console.error)
-// .finally(()=>client.close())
-
-
-// dbconn()
-
-// 
 
 module.exports=dbconn

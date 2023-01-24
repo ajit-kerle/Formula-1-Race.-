@@ -152,7 +152,6 @@ const getUsers = async(req,res)=>{
         
         let userdb=await dbconn()
 
-        // if()
 
 
         let match={}
@@ -164,7 +163,7 @@ const getUsers = async(req,res)=>{
             {email:new RegExp(req.query.keyword,"i")}
           ]
         }
-        console.log(match)
+    
 
 
         let sort={fullname:1,username:1}
@@ -180,8 +179,6 @@ const getUsers = async(req,res)=>{
          
          }
        }
-
-        console.log(sort)
         
        
         let pipeline=[

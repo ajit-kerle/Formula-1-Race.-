@@ -1,8 +1,11 @@
 const { MongoClient } = require('mongodb')
+const dotenv=require('dotenv')
 
-const dbName = 'dummydb'
 
-const url = 'mongodb://localhost:27017'
+dotenv.config()
+const dbName = process.env.DATABASE
+
+const url = process.env.URL
 const client = new MongoClient(url)
 
 

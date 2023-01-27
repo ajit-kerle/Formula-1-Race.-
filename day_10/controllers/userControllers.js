@@ -1,34 +1,38 @@
 const dbconn = require('../db/conn.js') 
-const {isValid}=require('../utils/validator.js')
+const {isValid,isValidEmail,isValidPassword}=require('../utils/validator.js')
 const {ObjectId}=require('mongodb')
 const bcrypt = require("bcrypt")
 
 const mobileRegex = /^[6-9]\d{9}$/
 
 const Users=require('../models/usersSchema.js')
-// 1. add user api
 
+// 1. add user api
 const addUser=async (req,res)=>{
   try{
-    // 
-    const reqData=req.body
 
-    // throw res.send({status:400,msg:"error using throw"})
+    const reqData=req.body 
     
-    // this code for generic error
+
+    if(!Object.keys(reqData).length >0){
+      return res.status(400).send({status:400,msg:"please fill required fileds"})
+    }
+
+
+    
     let {username,fullname,email,phone,gender,password}=reqData
-    // console.log(username)
+
 
     let errstr=""
     if(!isValid(username))  errstr=errstr+"Username " 
     if(!isValid(fullname))  errstr=errstr+"Fullname"
-    // if(!isValid(email))  errstr=errstr+"emai"
+    if(!isValid(email))  errstr=errstr+"email"
     if(!isValid(phone))  errstr=errstr+"phone"
     if(!isValid(gender))  errstr=errstr+"gender"
     if(!isValid(password))  errstr=errstr+"password"
    
 
-    if(!isValid(username) || !isValid(fullname) || !isValid(phone) || !isValid(gender)){
+    if(!isValid(username) || !isValid(fullname) || !isValid(phone) || !isValid(gender) || !isValid(email)){
         return res.status(400).send({status:400,msg:`${errstr} is can not be empty and null`})
     }
 
@@ -39,17 +43,26 @@ const addUser=async (req,res)=>{
 
 
     if(!mobileRegex.test(phone)) {
-        
-        return res.status(400).send({status:400,msg:"Enter valid phone number"})
+        return res.status(400).send({status:400,msg:"Enter valid indian phone number"})
     }
-
+    
+    // console.log(!obj1.isValidEmail())
     if(!obj1.isValidEmail()){
         return res.status(400).send({status:400,msg:'Enter valid email'})
     }
 
     if(!obj1.isValidPassword()){
-        return res.status(400).send({status:400,msg:'Enter valid email'})
+        return res.status(400).send({status:400,msg:'Enter valid password'})
     }
+
+    let user=await dbconn()
+   
+    let uniqueemail=await user.findOne({email:email})
+
+    if(uniqueemail){
+      return res.status(400).send({status:400,msg:"Email is already registered."})
+    }
+
 
     // password hashed
     const salt = await bcrypt.genSalt(10)
@@ -57,7 +70,7 @@ const addUser=async (req,res)=>{
     obj1.password=hashedPassword
 
 
-    let user=await dbconn()
+    
     const result=await user.insertOne(obj1)
     res.status(201).send({status:201,data:result})
 
@@ -76,16 +89,18 @@ const getUser=async(req,res)=>{
         let userid=req.params.id
         let userdb=await dbconn()
 
-        // {_id:ObjectId(userid)})
+    
         let userfound=await userdb.findOne({_id:ObjectId(userid)})
-        // console.log(userfound)
+
+        if(!userfound){
+          return res.status(404).send({status:404,msg:"user not found."})
+        }
+        
 
         res.status(200).send({status:200,data:userfound})
         }else{
             return res.status(400).send({status:400,msg:"invalid user id"})
         }
-
-       
     }catch(err){
       console.log('Error in getuser: ',err)
     }
@@ -96,13 +111,49 @@ const getUser=async(req,res)=>{
 const updateUser=async(req,res)=>{
     try{
         if(ObjectId.isValid(req.params.id)){
-     let userid=req.params.id
-    
+       let userdb=await dbconn()
+       let userid=req.params.id
 
-    let reqbody=req.body
-  
-     let userdb=await dbconn()
+      let reqbody=req.body
+
+    if(!Object.keys(reqbody).length >0){
+
+      return res.status(400).send({status:400,msg:"Provide something to update"})
+    }
+
+    if(req.body.email==="" || req.body.email){
+        if(!isValid(req.body.email) || !isValidEmail(req.body.email)){
+          return res.status(400).send({status:400,msg:"Provide valid email to update "})
+        }
+        let uniqueemail=await userdb.findOne({email:req.body.email})
+
+        if(uniqueemail){
+          return res.status(400).send({status:400,msg:"Email is already registered."})
+        }
+    
+    }
+
+
+    if(req.body.phone==="" || req.body.phone){
+      if(!isValid(req.body.phone) || !mobileRegex.test(req.body.phone)){
+        return res.status(400).send({status:400,msg:"Provide valid phone to update "})
+      }
+    }
+
+    if(req.body.password==="" || req.body.password){
+      if(!isValid(req.body.password) || !isValidPassword(req.body.password)){
+        return res.status(400).send({status:400,msg:"Provide valid password to update "})
+      }
+    }
+
+
+    const userfound=await userdb.findOne({_id:ObjectId(userid)})
+    if(!userfound){
+      return res.status(404).send({status:404,msg:"user not found"})
+    }
+     
      let updateduser=await userdb.updateOne({_id:ObjectId(userid)},{$set:reqbody})
+     
 
     res.status(201).send({status:201,data:updateduser})
     }else{
@@ -120,10 +171,14 @@ const deleteUser=async(req,res)=>{
     try{
         if(ObjectId.isValid(req.params.id)){
             let userid=req.params.id
-           //  console.log(ObjectId(userid))
-       
-       
+           
             let userdb=await dbconn()
+
+            const userfound=await userdb.findOne({_id:ObjectId(userid)})
+            if(!userfound){
+              return res.status(404).send({status:404,msg:"user is already deleted.."})
+            }
+             
 
             let userdeleted=await userdb.deleteOne({_id:ObjectId(userid)})
        
@@ -141,9 +196,6 @@ const deleteUser=async(req,res)=>{
 // 5. get all users
 const getUsers = async(req,res)=>{
     try{
-        // users
-        
-
         // pagination logic 
         let page=req.query.page||1
         let docperpage=3
@@ -155,7 +207,6 @@ const getUsers = async(req,res)=>{
 
 
         let match={}
-
         if(req.query.keyword){
            match.$or=[
             {username:new RegExp(req.query.keyword,"i")},
@@ -163,9 +214,6 @@ const getUsers = async(req,res)=>{
             {email:new RegExp(req.query.keyword,"i")}
           ]
         }
-    
-
-
         let sort={fullname:1,username:1}
 
         if(req.query.fullname){
@@ -180,90 +228,21 @@ const getUsers = async(req,res)=>{
          }
        }
         
-       
-        let pipeline=[
-          
-          
+      
+        let pipeline=[ 
           {$match:match},
       
           {
             $facet:{
-              data:[{$skip:skip},{$limit:limit},{$sort:sort}],
-              
+              data:[{$skip:skip},{$limit:limit},{$sort:sort}], 
             }
           } ,
-          
-         
         ]
 
         let allusers=await userdb.aggregate(pipeline).toArray()
 
-
-        // // pagination
-        // if(req.query.page){
-        // let page=req.query.page||0
-        // let perpage=3
-        // const paginationdata=await userdb.find().skip(perpage*page).limit(perpage).toArray()
-        // return res.status(200).send({status:200,data:paginationdata})
-
-        
-        // }else {
-        //     // sort by fullname
-        //  if(req.query.fullname){
-        //     let fullname_sort=req.query.fullname
-        //     const fullnamesorteduser=await userdb.find().sort({fullname:fullname_sort}).toArray()
-        //    return res.status(200).send({status:200,data:fullnamesorteduser})
-
-        //    // sort by username
-        //  }else if(req.query.username){
-        //     let username_sort=req.query.username
-        //     const usernamesortuser=await userdb.find().sort({username:username_sort}).toArray()
-        //    return res.status(200).send({status:200,data:usernamesortuser})
-        //  }
-        // }
-        
-        // let filterobj={}
-        // let queryData=req.query
-        // let fname=queryData.fname
-        // let lname= queryData.lname
-        // let email=queryData.email
-
-
-        // if(fname){
-        //   filterobj.fullname={}
-        //   fname=fname.trim()
-        //   filterobj.fullname.$regex=fname
-        //   filterobj.fullname.$options="i"
-        //   const searchfname=await userdb.find(filterobj).toArray()
-        //   return res.status(200).send({status:200,data:searchfname})
-        // }
-
-        // if(lname){
-        //   filterobj.username={}
-        //   lname=lname.trim()
-        //   filterobj.username.$regex=lname
-        //   filterobj.username.$options="i"
-        //   const searchlname=await userdb.find(filterobj).toArray()
-        //   return res.status(200).send({status:200,data:searchlname})
-        // }
-
-        // if(email){
-            
-        //     filterobj.email={}
-        //     email=email.trim()
-        //     filterobj.email.$regex=email
-        //     filterobj.email.$options="i"
-        //     const searchemail=await userdb.find(filterobj).toArray()
-        //     return res.status(200).send({status:200,data:searchemail})
-        // }
-        
-        // const allusers=await userdb.find(filterobj).toArray()
-
-
-        
-
+        res.status(200).send({status:200,data:allusers[0].data})
     
-        res.status(200).send({status:200,data:allusers})
 
     }catch(err){
       console.log('Error in getUsers: ',err)
@@ -291,8 +270,9 @@ const modifieUser=async (req,res)=>{
               await userdb.updateOne({_id:ObjectId(req.params.id)},{$push:{followers:req.body.userId}})
 
               // pushing followinns
-              await userdb.updateOne({_id:ObjectId(req.body.userId)},{$push:{followins:req.body.userId}})
-              res.status(201).send({status:201,data:currentuser})
+             const followed= await userdb.updateOne({_id:ObjectId(req.body.userId)},{$push:{followins:req.body.userId}},{upsert:true})
+
+              res.status(201).send({status:201,data:followed})
 
             }else{
                 return res.status(403).send({status:403,msg:"you already followers"})
@@ -318,8 +298,23 @@ const showFollowers=async(req,res)=>{
         if(ObjectId.isValid(req.params.id)){
             let userdb=await dbconn()
             let userfollowers=await userdb.findOne({_id:ObjectId(req.params.id)})
+
+           
+            if(!userfollowers){
+              return res.status(404).send({status:404,msg:"user not found."})
+            }
+             
+            let respo={
+              username:userfollowers.username,
+              fullname:userfollowers.fullname,
+              followers:userfollowers.followers,
+              followins:userfollowers.followins,
+              gender:userfollowers.gender,
+              phone:userfollowers.phone
+            }
+
             
-            res.status(200).send({status:200,followers:userfollowers.followers})
+            res.status(200).send({status:200,data:respo})
         }else{
             return res.status(400).send({status:400,msg:"invalid user id"})
         }
@@ -329,15 +324,10 @@ const showFollowers=async(req,res)=>{
     }
 }
 
-// 8. restaurant for learning aggregation pipe line
-// const aggregation_pipeline=async ()=>{
-  
-// }
 
 
 
 // login api
-
 const loginHandler=async(req,res)=>{
   try{
     let credentials=req.body

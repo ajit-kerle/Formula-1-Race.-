@@ -32,5 +32,9 @@ router.get('/user/:id/followers',showFollowers)
 // login api
 router.post("/login",auth,loginHandler)
 
+
+// all end point handling
+
+
 module.exports=router
 

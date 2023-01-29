@@ -14,6 +14,9 @@ chai.use(chaiHttp)
 var server=require('../index.js')
 const { response } = require('express')
 
+
+
+
 describe("Get Api Request Tests", (done)=>{
 
     // get all users list 
@@ -44,6 +47,7 @@ describe("Get Api Request Tests", (done)=>{
         })
     })
     
+
     it("Should not be able to get all user list",(done)=>{
         chai.request(server)
         .get('/allusers')
@@ -204,7 +208,7 @@ describe("Patch API Request /updateuser",()=>{
             // checking inserted or not
             expect(response.body.data.acknowledged).to.be.equal(true)
             expect(response.body.data.modifiedCount).to.be.equal(0)
-        done()
+        done() 
 
         })
     })
@@ -367,7 +371,7 @@ describe("follow user API Request user/:id/follow",()=>{
 
             // checking inserted or not
             // expect(response.body.data.modifiedCount).to.be.equal(1)
-            console.log("followed successfully")
+            // console.log("followed successfully")
             
         done()
 
@@ -380,7 +384,7 @@ describe("follow user API Request user/:id/follow",()=>{
     // // negative test suite for path request
     it("Should not able to follow",(done)=>{
         let body={
-            "userId":"63ce67f3c27534dfa99d5399"
+            "userId":"63ce67f3c27534dfa99d5399h"
         }
 
         let userId="63ce67f3c27534dfa99d5399"
@@ -398,7 +402,7 @@ describe("follow user API Request user/:id/follow",()=>{
             response.body.should.be.a("object")
 
             // checking inserted or not
-            expect(response.body.msg).to.be.equal("you can nt follow own account")
+            expect(response.body.msg).to.be.equal("you cannt follow own account")
         done()    
         })
     })

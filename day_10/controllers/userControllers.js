@@ -3,6 +3,8 @@ const {isValid,isValidEmail,isValidPassword}=require('../utils/validator.js')
 const {ObjectId}=require('mongodb')
 const bcrypt = require("bcrypt")
 
+const io=require("../index.js")
+
 const mobileRegex = /^[6-9]\d{9}$/
 
 const Users=require('../models/usersSchema.js')
@@ -88,6 +90,8 @@ const getUser=async(req,res)=>{
         if(ObjectId.isValid(req.params.id)){
         let userid=req.params.id
         let userdb=await dbconn()
+
+        // var socket=io()
 
     
         let userfound=await userdb.findOne({_id:ObjectId(userid)})

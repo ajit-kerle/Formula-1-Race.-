@@ -12,15 +12,32 @@ app.use(express.static(__dirname+"/"))
 
 var users=0
 
+var roomno=1;
+
+var full=0
+
+// let csp=io.of("/chats")
+
 io.on("connection",function(socket){
     console.log("A user connected")
-
-    users++;
-
-    socket.emit("newuserevents",{msg:"hi users dear"})
+    
+    // csp.emit("testevent","chats one")
     
 
-    socket.broadcast.emit("newuserevents",{msg:users+" user connected"})
+    // rooms code 
+    // socket.join("room-"+roomno)
+
+    // io.sockets.in("room-"+roomno).emit('connectedRoom',"you are connected to room number "+roomno)
+    
+    // full++;
+    // if(full>=2){
+    //     full=0
+    //     roomno++
+    // }
+    // =================================
+    // users++;
+    // socket.emit("newuserevents",{msg:"hi users dear"})
+    // socket.broadcast.emit("newuserevents",{msg:users+" user connected"})
     // io.sockets.emit("broadcast",{message:users+" users connected!"})
 
     // broadcast : how many user connected
@@ -35,14 +52,18 @@ io.on("connection",function(socket){
     // socket.on("customEvent",(data)=>{
     //     console.log(data)
     // })
+    // =====================================
 
     socket.on("disconnect",function(){
         console.log("A user disconnected")
 
-        users--;
+        // users--;
+        // roomno--
+        // full--
+
 
         // io.sockets.emit("broadcast",{message:users+" users connected!"})
-        socket.broadcast.emit("newuserevents",{msg:users+" user connected"})
+        // socket.broadcast.emit("newuserevents",{msg:users+" user connected"})
     })
 })
 
